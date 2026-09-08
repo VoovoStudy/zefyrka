@@ -8,6 +8,16 @@ import 'editor.dart';
 
 mixin RawEditorStateTextInputClientMixin on EditorState
     implements TextInputClient {
+  /// Flutter 3.44 added `onFocusReceived` to [TextInputClient]. This mixin
+  /// declares it implements that interface, so without this member every
+  /// concrete editor state fails to compile.
+  ///
+  /// `false` is the framework's own default — the editor does not claim focus
+  /// merely because the input connection reports it — which keeps the
+  /// behaviour identical to every Flutter version before 3.44.
+  @override
+  bool onFocusReceived() => false;
+
   final List<TextEditingValue?> _sentRemoteValues = [];
   TextInputConnection? _textInputConnection;
   TextEditingValue? _lastKnownRemoteTextEditingValue;
